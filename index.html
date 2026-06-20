@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="臺南市政府員工協助方案心理諮商預約服務非官方測試版，提供申請注意事項、壓力檢測、特約諮商所媒合與預約信件產生。">
+  <title>臺南市政府員工協助方案心理諮商預約服務｜非官方測試版</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    :root {
+      --cream: #fff7e8;
+      --cream-deep: #f5dec1;
+      --tea: #c99663;
+      --tea-dark: #7b5437;
+      --orange: #e9965a;
+      --leaf: #7f9c72;
+      --sage: #dfe8d5;
+      --ink: #3f332b;
+      --line: rgba(124, 84, 55, .18);
+      --card: rgba(255, 253, 247, .92);
+    }
+
+    * {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 226, 162, .48), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(181, 211, 167, .42), transparent 26%),
+        linear-gradient(135deg, #fff9ec 0%, #f7e3c8 48%, #fdf5df 100%);
+      min-height: 100vh;
+    }
+
+    .watercolor {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .watercolor::before,
+    .watercolor::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(18px);
+      opacity: .58;
+      pointer-events: none;
+    }
+
+    .watercolor::before {
+      width: 18rem;
+      height: 18rem;
+      background: #ffd89d;
+      left: -5rem;
+      top: -6rem;
+    }
+
+    .watercolor::after {
+      width: 22rem;
+      height: 22rem;
+      background: #cfe3be;
+      right: -7rem;
+      bottom: -7rem;
+    }
+
+    .soft-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 18px 50px rgba(113, 78, 47, .12);
+      backdrop-filter: blur(8px);
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 3vw, 2.6rem);
+      font-weight: 900;
+      color: #5f3f2b;
+      letter-spacing: 0;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-quiet {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      min-height: 44px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #de8a4d, #c17a43);
+      color: white;
+      box-shadow: 0 12px 24px rgba(193, 122, 67, .25);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-quiet:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #fff4dd;
+      color: #70472d;
+      border: 1px solid rgba(112, 71, 45, .18);
+    }
+
+    .btn-quiet {
+      background: rgba(255, 255, 255, .72);
+      color: #70472d;
+      border: 1px solid rgba(112, 71, 45, .16);
+    }
+
+    .field {
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid rgba(112, 71, 45, .22);
+      background: rgba(255, 255, 255, .82);
+      padding: .85rem 1rem;
+      outline: none;
+      transition: border .2s ease, box-shadow .2s ease;
+    }
+
+    .field:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 4px rgba(233, 150, 90, .18);
+    }
+
+    .label {
+      display: block;
+      margin-bottom: .45rem;
+      font-weight: 800;
+      color: #5b4030;
+    }
+
+    .required::after {
+      content: " *";
+      color: #b94f3d;
+    }
+
+    .chip-option input,
+    .check-option input {
+      accent-color: #c17a43;
+    }
+
+    .issue-card {
+      border: 1px solid rgba(112, 71, 45, .17);
+      background: rgba(255, 251, 242, .84);
+      border-radius: 18px;
+      padding: .85rem;
+      min-height: 68px;
+      transition: transform .2s ease, border .2s ease, background .2s ease;
+    }
+
+    .issue-card:has(input:checked) {
+      border-color: rgba(193, 122, 67, .75);
+      background: #fff0d7;
+      transform: translateY(-2px);
+    }
+
+    .logo-mark {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      object-fit: contain;
+      padding: 6px;
+      background: linear-gradient(135deg, #fffdf7, #f5dec1);
+      border: 1px solid rgba(112, 71, 45, .14);
+    }
+
+    .site-logo {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .72);
+      padding: 6px;
+      border: 1px solid rgba(112, 71, 45, .12);
+      box-shadow: 0 10px 24px rgba(113, 78, 47, .10);
+    }
+
+    .hero-illustration {
+      aspect-ratio: 1536 / 1024;
+      min-height: 360px;
+      background: rgba(255, 253, 247, .52);
+      border: 1px solid rgba(112, 71, 45, .16);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.42), 0 24px 70px rgba(113, 78, 47, .12);
+    }
+
+    .hero-visual-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .chat-panel {
+      width: 380px;
+      height: 600px;
+      max-width: calc(100vw - 1.5rem);
+      max-height: 75vh;
+      transform-origin: bottom right;
+      transition: opacity .24s ease, transform .24s ease;
+    }
+
+    .chat-panel.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(18px) scale(.94);
+    }
+
+    .chat-message {
+      max-width: 86%;
+      border-radius: 18px;
+      padding: .75rem .9rem;
+      line-height: 1.65;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+
+    .chat-message.bot {
+      align-self: flex-start;
+      background: #fff5df;
+      border: 1px solid rgba(112, 71, 45, .15);
+    }
+
+    .chat-message.user {
+      align-self: flex-end;
+      background: #dd8f55;
+      color: white;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.5rem;
+      transform: translateX(-50%) translateY(1rem);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 80;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .chat-panel {
+        width: 95vw;
+        height: 75vh;
+        right: 2.5vw;
+      }
+
+      .hero-illustration {
+        min-height: 260px;
+      }
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <header class="sticky top-0 z-50 border-b border-amber-900/10 bg-[#fff8ea]/90 backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8" aria-label="主要導覽">
+      <a href="#top" class="flex items-center gap-3 font-black text-[#5f3f2b]">
+        <img class="site-logo" src="assets/logos/tainan-city-logo.jpg" alt="臺南市政府市徽">
+        <span class="hidden max-w-[34rem] leading-tight sm:block">臺南市政府員工協助方案心理諮商預約服務<br><small class="font-bold text-[#8b6a52]">非官方測試版</small></span>
+      </a>
+      <button id="mobileMenuButton" class="btn-quiet px-4 lg:hidden" type="button" aria-controls="mainMenu" aria-expanded="false">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i><span>選單</span>
+      </button>
+      <div id="mainMenu" class="hidden items-center gap-2 lg:flex">
+        <a class="btn-quiet px-4" href="#notice">申請注意事項</a>
+        <a class="btn-quiet px-4" href="#stress">壓力檢測</a>
+        <a class="btn-quiet px-4" href="#clinics">特約諮商所</a>
+        <a class="btn-primary px-5" href="#reservation">預約表單</a>
+      </div>
+    </nav>
+    <div id="mobileMenu" class="hidden border-t border-amber-900/10 bg-[#fff8ea] px-4 py-3 lg:hidden">
+      <div class="grid gap-2">
+        <a class="btn-quiet px-4" href="#notice">申請注意事項</a>
+        <a class="btn-quiet px-4" href="#stress">壓力檢測</a>
+        <a class="btn-quiet px-4" href="#clinics">特約諮商所</a>
+        <a class="btn-primary px-5" href="#reservation">預約表單</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="watercolor mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 lg:grid-cols-[0.82fr_1.18fr] lg:px-8 lg:py-20">
+      <div class="relative z-10 lg:max-w-[46rem]">
+        <p class="mb-4 inline-flex rounded-full border border-amber-900/10 bg-white/60 px-4 py-2 font-bold text-[#7b5437]">
+          EAP 員工協助方案｜溫暖陪伴與預約媒合
+        </p>
+        <h1 class="text-4xl font-black leading-tight text-[#553723] sm:text-5xl lg:text-6xl">臺南市政府員工協助方案心理諮商預約服務</h1>
+        <p class="mt-5 max-w-2xl text-xl font-bold leading-9 text-[#72533e]">給每一位努力工作的同仁，一個安心被支持的空間。</p>
+        <p class="mt-4 max-w-2xl leading-8 text-[#6b5546]">這是一個非官方測試版介面，協助您了解申請注意事項、進行壓力檢測、瀏覽特約心理諮商所，並產生預約信件草稿。</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#reservation" class="btn-primary px-7 py-3"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>立即填寫預約表單</a>
+          <a href="#stress" class="btn-secondary px-7 py-3"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i>進行壓力檢測</a>
+        </div>
+      </div>
+      <div class="hero-illustration relative z-10 overflow-hidden rounded-[32px]" aria-label="臺南市政府員工心理支持水彩主視覺">
+        <img class="hero-visual-image" src="idex-pic.png" alt="理解、支持、陪伴，臺南市政府員工心理支持水彩插畫">
+      </div>
+    </section>
+
+    <section id="notice" class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p class="font-black text-[#c17a43]">申請前先知道</p>
+          <h2 class="section-title">諮商申請注意事項</h2>
+        </div>
+        <a href="#reservation" class="btn-secondary px-6 py-3"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i>前往預約表單</a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="soft-card p-6"><i class="fa-solid fa-clock mb-4 text-3xl text-[#c17a43]" aria-hidden="true"></i><h3 class="text-xl font-black">年度補助</h3><p class="mt-2 leading-8">每人每年補助 4 小時，每小時 1,600 元。</p></article>
+        <article class="soft-card p-6"><i class="fa-solid fa-briefcase mb-4 text-3xl text-[#7f9c72]" aria-hidden="true"></i><h3 class="text-xl font-black">辦公時間使用</h3><p class="mt-2 leading-8">如需於辦公時間使用本方案心理諮商協談之人員，得辦理公假或公出登記。</p></article>
+        <article class="soft-card p-6"><i class="fa-solid fa-calendar-xmark mb-4 text-3xl text-[#c17a43]" aria-hidden="true"></i><h3 class="text-xl font-black">取消與遲到</h3><p class="mt-2 leading-8">申請心理協談之員工於約定時間後，因故不能前往而未於前一日告知，或遲到 15 分鐘以上，應自行負擔當次諮商鐘點費。</p></article>
+        <article class="soft-card p-6"><i class="fa-solid fa-door-open mb-4 text-3xl text-[#7f9c72]" aria-hidden="true"></i><h3 class="text-xl font-black">服務自主</h3><p class="mt-2 leading-8">同仁於接受本方案各項服務過程中，得隨時要求終止服務。</p></article>
+      </div>
+    </section>
+
+    <section id="stress" class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <div class="soft-card grid gap-8 p-6 md:grid-cols-[1fr_auto] md:items-center lg:p-9">
+        <div>
+          <p class="font-black text-[#c17a43]">壓力檢測量表</p>
+          <h2 class="section-title">先理解自己的身心狀態</h2>
+          <p class="mt-4 max-w-3xl text-lg leading-8">可先透過壓力檢測量表初步了解自己的身心壓力狀態。量表為外部網站，將以新分頁開啟。</p>
+        </div>
+        <a class="btn-primary px-7 py-3" href="https://health99.hpa.gov.tw/health99/HealthCheck/Detail?nodeId=115&type=StressIndex" target="_blank" rel="noopener noreferrer">
+          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>前往壓力檢測量表
+        </a>
+      </div>
+    </section>
+
+    <section id="clinics" class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <div class="mb-8">
+        <p class="font-black text-[#c17a43]">合作資源</p>
+        <h2 class="section-title">特約心理諮商所</h2>
+        <p class="mt-3 max-w-3xl leading-8 text-[#6b5546]">點選諮商所名稱可前往網站。若公開 Logo 或 favicon 無法載入，系統會以溫暖風格圖示替代。</p>
+      </div>
+      <div id="clinicGrid" class="grid gap-5 md:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <section id="reservation" class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <div class="mb-8">
+        <p class="font-black text-[#c17a43]">預約媒合</p>
+        <h2 class="section-title">心理諮商預約表單</h2>
+      </div>
+
+      <div class="mb-6 rounded-3xl border border-amber-900/15 bg-[#fff3d8] p-5 leading-8 text-[#63432f]">
+        <div class="flex gap-3">
+          <i class="fa-solid fa-shield-heart mt-1 text-2xl text-[#c17a43]" aria-hidden="true"></i>
+          <div>
+            <h3 class="text-lg font-black">資料處理提醒</h3>
+            <p>本網站為非官方測試版，僅作為介面設計與流程展示使用。目前不會將資料儲存至伺服器或資料庫。點選送出預約信件後，系統會透過使用者本機電子郵件軟體產生信件草稿，請確認內容後再自行寄出。請避免填寫身分證字號、病歷號、診斷名稱、帳號密碼等高度敏感資訊。</p>
+          </div>
+        </div>
+      </div>
+
+      <form id="reservationForm" class="soft-card p-5 lg:p-8" novalidate>
+        <fieldset class="mb-9">
+          <legend class="mb-5 text-2xl font-black text-[#5f3f2b]">A. 基本資料</legend>
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div><label class="label required" for="name">姓名</label><input class="field" id="name" name="name" type="text" autocomplete="name" required></div>
+            <div><label class="label required" for="gender">性別</label><select class="field" id="gender" name="gender" required><option value="">請選擇</option><option>男</option><option>女</option><option>其他</option><option>不願透露</option></select></div>
+            <div><label class="label required" for="age">年齡</label><input class="field" id="age" name="age" type="number" min="18" max="80" required></div>
+            <div><label class="label required" for="agency">服務機關</label><select class="field" id="agency" name="agency" required></select></div>
+            <div><label class="label required" for="employeeType">人員類別</label><select class="field" id="employeeType" name="employeeType" required><option value="">請選擇</option><option>公務人員</option><option>約聘僱用人員</option><option>技工工友駕駛</option><option>臨時人員</option></select></div>
+            <div><label class="label required" for="jobTitle">職稱</label><input class="field" id="jobTitle" name="jobTitle" type="text" required></div>
+            <div><label class="label required" for="serviceYears">服務年資</label><select class="field" id="serviceYears" name="serviceYears" required><option value="">請選擇</option><option>1-5 年</option><option>6-10 年</option><option>11-15 年</option><option>16-20 年</option><option>21 年以上</option></select></div>
+            <div><label class="label required" for="email">電子信箱</label><input class="field" id="email" name="email" type="email" autocomplete="email" required></div>
+            <div><label class="label required" for="phone">聯絡電話</label><input class="field" id="phone" name="phone" type="tel" required></div>
+            <div><label class="label required" for="mobile">手機</label><input class="field" id="mobile" name="mobile" type="tel" placeholder="09xxxxxxxx" required></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="mb-9">
+          <legend class="mb-5 text-2xl font-black text-[#5f3f2b]">B. 問題類型</legend>
+          <p class="mb-4 leading-8 text-[#6b5546]">可複選。若您不確定，也可以先和右下角「心情垃圾筒」聊聊，系統會協助帶入建議類型。</p>
+          <div id="concernGrid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"></div>
+          <div id="suicideNotice" class="mt-4 hidden rounded-2xl border border-[#d88f6a]/40 bg-[#fff0df] p-4 leading-8 text-[#6b4630]">
+            若您目前有立即安全疑慮，請優先聯繫 1925 安心專線、119 或就近急診，確保自身安全。這段提醒不能取代醫療或緊急協助。
+          </div>
+        </fieldset>
+
+        <fieldset class="mb-9">
+          <legend class="mb-5 text-2xl font-black text-[#5f3f2b]">C. 預約諮商需求</legend>
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div><label class="label required" for="preferredClinic">選擇諮商所</label><select class="field" id="preferredClinic" name="preferredClinic" required></select></div>
+            <div><label class="label required" for="preferredDay">希望諮商星期</label><select class="field" id="preferredDay" name="preferredDay" required><option value="">請選擇</option><option>星期一</option><option>星期二</option><option>星期三</option><option>星期四</option><option>星期五</option><option>星期六</option><option>星期日</option></select></div>
+            <div><label class="label required" for="preferredTime">希望諮商時段</label><select class="field" id="preferredTime" name="preferredTime" required><option value="">請選擇</option><option>上午</option><option>下午</option><option>晚上</option></select></div>
+            <div><label class="label required" for="method">諮商方式</label><select class="field" id="method" name="method" required><option value="">請選擇</option><option>面談</option><option>視訊</option></select></div>
+            <div><label class="label required" for="counselorGender">諮商心理師性別</label><select class="field" id="counselorGender" name="counselorGender" required><option value="">請選擇</option><option>男</option><option>女</option><option>不拘</option></select></div>
+            <div><label class="label required" for="location">諮商地點</label><select class="field" id="location" name="location" required><option value="">請選擇</option><option>永華市政中心</option><option>民治市政中心</option><option>各行政區衛生所</option><option>諮商師服務地</option></select></div>
+            <div class="md:col-span-2 lg:col-span-3"><label class="label" for="message">想跟諮商心理師說的話</label><textarea class="field min-h-36" id="message" name="message" rows="5" placeholder="可簡短描述最近想談的主題，避免填寫高度敏感資訊。"></textarea></div>
+          </div>
+        </fieldset>
+
+        <div id="formErrors" class="mb-5 hidden rounded-2xl border border-red-300 bg-red-50 p-4 leading-8 text-red-800" role="alert"></div>
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <button class="btn-primary px-7 py-3" type="submit"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>送出並查看媒合結果</button>
+          <button class="btn-secondary px-7 py-3" type="reset"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i>重設表單</button>
+        </div>
+      </form>
+
+      <section id="recommendations" class="mt-10 hidden" aria-live="polite">
+        <div class="mb-5">
+          <p class="font-black text-[#c17a43]">媒合結果</p>
+          <h2 class="section-title">最符合需求的 3 家諮商所</h2>
+        </div>
+        <div id="recommendationGrid" class="grid gap-5 lg:grid-cols-3"></div>
+      </section>
+
+      <section id="confirmation" class="mt-10 hidden" aria-live="polite">
+        <div class="soft-card p-5 lg:p-8">
+          <p class="font-black text-[#c17a43]">確認預約</p>
+          <h2 class="section-title">預約信件草稿</h2>
+          <p class="mt-3 leading-8 text-[#6b5546]">本網站為預約信件產生工具，點選送出後將開啟您的電子郵件軟體，請確認內容後再寄出。</p>
+          <div id="confirmationSummary" class="mt-6 grid gap-5 lg:grid-cols-2"></div>
+          <label class="label mt-6" for="emailDraft">信件內容</label>
+          <textarea id="emailDraft" class="field min-h-64" readonly></textarea>
+          <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+            <a id="mailtoButton" class="btn-primary px-7 py-3" href="#"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>送出預約信件</a>
+            <button id="copyEmailButton" class="btn-secondary px-7 py-3" type="button"><i class="fa-solid fa-copy" aria-hidden="true"></i>複製信件內容</button>
+            <button id="chooseAgainButton" class="btn-quiet px-7 py-3" type="button"><i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i>重新選擇諮商所</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <button id="backToTop" class="btn-primary fixed bottom-6 left-6 z-40 hidden h-12 w-12 rounded-full p-0" type="button" aria-label="回到頁面頂部">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <aside id="chatAssistant" class="fixed bottom-5 right-5 z-50">
+    <section id="chatPanel" class="chat-panel is-hidden soft-card flex flex-col overflow-hidden" aria-label="心情垃圾筒聊天視窗">
+      <header class="flex items-center justify-between gap-3 border-b border-amber-900/10 bg-[#fff2d7] p-4">
+        <div class="flex items-center gap-3">
+          <div class="grid h-12 w-12 place-items-center rounded-2xl bg-[#df9b63] text-xl text-white" aria-hidden="true"><i class="fa-solid fa-inbox"></i></div>
+          <div>
+            <h2 class="font-black text-[#5f3f2b]">心情垃圾筒</h2>
+            <p class="text-sm font-bold text-[#80614a]">把煩惱先放進來，我陪你一起整理</p>
+          </div>
+        </div>
+        <button id="minimizeChatButton" class="btn-quiet h-10 w-10 rounded-full p-0" type="button" aria-label="收合聊天視窗"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+      </header>
+      <div id="chatMessages" class="flex flex-1 flex-col gap-3 overflow-y-auto bg-[#fffaf0] p-4"></div>
+      <div id="quickPrompts" class="flex gap-2 overflow-x-auto border-t border-amber-900/10 bg-white/70 p-3"></div>
+      <form id="chatForm" class="border-t border-amber-900/10 bg-white p-3">
+        <label class="sr-only" for="chatInput">輸入想說的內容</label>
+        <div class="flex gap-2">
+          <input id="chatInput" class="field min-w-0 flex-1 rounded-full py-3" type="text" placeholder="把想說的先放進來..." autocomplete="off">
+          <button class="btn-primary h-12 w-12 rounded-full p-0" type="submit" aria-label="傳送"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+        </div>
+        <div class="mt-2 flex items-center justify-between gap-2">
+          <button id="clearChatButton" class="text-sm font-black text-[#7b5437] underline" type="button">清除對話</button>
+          <p class="text-xs leading-5 text-[#7a6658]">本功能僅提供心理支持與預約引導，不能取代專業心理諮商、精神醫療或緊急救援服務。請勿輸入敏感個資。</p>
+        </div>
+      </form>
+    </section>
+    <button id="openChatButton" class="btn-primary h-16 rounded-full px-5 shadow-2xl" type="button" aria-expanded="false" aria-controls="chatPanel">
+      <i class="fa-solid fa-comment-dots text-xl" aria-hidden="true"></i><span>心情垃圾筒</span>
+    </button>
+  </aside>
+
+  <div id="toast" class="toast rounded-full bg-[#5f3f2b] px-5 py-3 font-bold text-white shadow-xl" role="status"></div>
+
+  <script>
+    const stressTestUrl = "https://health99.hpa.gov.tw/health99/HealthCheck/Detail?nodeId=115&type=StressIndex";
+
+    const agencyOptions = [
+      "臺南市政府", "民政局", "財政稅務局", "教育局", "經濟發展局", "工務局", "水利局", "農業局",
+      "觀光旅遊局", "都市發展局", "社會局", "勞工局", "警察局", "消防局", "衛生局", "環境保護局",
+      "文化局", "交通局", "地政局", "法制處", "新聞及國際關係處", "人事處", "主計處", "政風處",
+      "研究發展考核委員會", "原住民族事務委員會", "客家事務委員會"
+    ];
+
+    const concernTypes = [
+      { id: "情緒困擾", icon: "fa-face-sad-tear" },
+      { id: "身心壓力", icon: "fa-heart-pulse" },
+      { id: "人際關係", icon: "fa-user-group" },
+      { id: "感情婚姻", icon: "fa-heart" },
+      { id: "家庭議題", icon: "fa-house-user" },
+      { id: "親子關係", icon: "fa-child-reaching" },
+      { id: "喪親失落", icon: "fa-ribbon" },
+      { id: "自殺意念", icon: "fa-hand-holding-medical" },
+      { id: "工作效能", icon: "fa-list-check" },
+      { id: "職場溝通", icon: "fa-comments" },
+      { id: "職場適應", icon: "fa-briefcase" },
+      { id: "生涯職涯", icon: "fa-compass" }
+    ];
+
+    const defaultClinicAvailability = {
+      availableDays: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+      availableTimes: ["上午", "下午", "晚上"],
+      methods: ["面談", "視訊"],
+      locations: ["永華市政中心", "民治市政中心", "各行政區衛生所", "諮商師服務地"],
+      counselorGenderOptions: ["男", "女", "不拘"]
+    };
+
+    // 日後若有正式資料來源，可改由後端 API 或核准爬蟲更新此陣列；目前為純前端靜態資料。
+    const counselingCenters = [
+      {
+        id: "natureiswell",
+        name: "自然就好心理諮商所",
+        address: "臺南市東區慶東街214號",
+        phone: "06-2752858",
+        email: "natureiswell@gmail.com",
+        website: "https://www.natureiswell.com.tw/",
+        logo: "assets/logos/natureiswell.png",
+        specialties: ["情緒困擾", "身心壓力", "人際關係", "職場壓力", "家庭議題", "親子關係"],
+        description: "以溫和陪伴協助整理情緒、壓力、人際與家庭議題。",
+        ...defaultClinicAvailability
+      },
+      {
+        id: "hopelight",
+        name: "看見光亮心理諮商所",
+        address: "臺南市北區海安路三段985巷27弄13號",
+        phone: "06-3584327",
+        email: "service@hopelight.com.tw",
+        website: "https://www.hopelight.com.tw/",
+        logo: "assets/logos/hopelight.png",
+        specialties: ["情緒困擾", "感情婚姻", "家庭議題", "親子關係", "喪親失落", "自我探索"],
+        description: "關注情緒、關係、家庭與失落經驗中的心理支持。",
+        availableDays: ["星期一", "星期二", "星期三", "星期五", "星期六"],
+        availableTimes: ["上午", "下午", "晚上"],
+        methods: ["面談", "視訊"],
+        locations: ["各行政區衛生所", "諮商師服務地", "永華市政中心"],
+        counselorGenderOptions: ["女", "不拘"]
+      },
+      {
+        id: "eosgrace",
+        name: "曙光角落心理諮商所",
+        address: "臺南市東區崇明路155巷4號",
+        phone: "0978-909965",
+        email: "grace@umail.hinet.net",
+        website: "https://www.eosgrace.com/",
+        logo: "assets/logos/eosgrace.ico",
+        specialties: ["情緒困擾", "身心壓力", "創傷復原", "家庭議題", "職場適應", "生涯職涯"],
+        description: "協助面對壓力、創傷復原、職場適應與生涯方向。",
+        availableDays: ["星期二", "星期三", "星期四", "星期五", "星期日"],
+        availableTimes: ["下午", "晚上"],
+        methods: ["面談", "視訊"],
+        locations: ["永華市政中心", "諮商師服務地"],
+        counselorGenderOptions: ["男", "女", "不拘"]
+      },
+      {
+        id: "togetherwithheart",
+        name: "這會心理諮商所",
+        address: "臺南市關廟區南雄路二段30號",
+        phone: "0918-071281",
+        email: "togetherwithheart@gmail.com",
+        website: "https://togetherwithheart.com/",
+        logo: "assets/logos/togetherwithheart.png",
+        specialties: ["人際關係", "感情婚姻", "家庭議題", "親子關係", "職場溝通", "情緒困擾"],
+        description: "陪伴梳理人際、家庭、感情與職場溝通中的卡點。",
+        availableDays: ["星期一", "星期三", "星期四", "星期六", "星期日"],
+        availableTimes: ["上午", "下午"],
+        methods: ["面談", "視訊"],
+        locations: ["民治市政中心", "各行政區衛生所", "諮商師服務地"],
+        counselorGenderOptions: ["女", "不拘"]
+      },
+      {
+        id: "kxmind",
+        name: "寬欣心理治療所",
+        address: "臺南市北區育德一街227號",
+        phone: "06-2510966",
+        email: "kx.kxmind@gmail.com",
+        website: "https://www.kxmind.com/",
+        logo: "assets/logos/kxmind.png",
+        specialties: ["身心壓力", "情緒困擾", "工作效能", "職場溝通", "職場適應", "生涯職涯"],
+        description: "適合工作壓力、效能調整與職場適應相關需求。",
+        availableDays: ["星期一", "星期二", "星期四", "星期五"],
+        availableTimes: ["上午", "下午", "晚上"],
+        methods: ["面談"],
+        locations: ["永華市政中心", "諮商師服務地"],
+        counselorGenderOptions: ["男", "女", "不拘"]
+      },
+      {
+        id: "kxmind2",
+        name: "芯寬欣心理治療所",
+        address: "臺南市北區北安路一段273號",
+        phone: "06-2510560",
+        email: "kx.kxmind2@gmail.com",
+        website: "https://www.kxmind.com/",
+        logo: "assets/logos/kxmind2.png",
+        specialties: ["情緒困擾", "身心壓力", "人際關係", "家庭議題", "工作效能", "職場適應"],
+        description: "提供情緒壓力、人際家庭與職場適應支持。",
+        availableDays: ["星期二", "星期三", "星期四", "星期六"],
+        availableTimes: ["上午", "下午", "晚上"],
+        methods: ["面談", "視訊"],
+        locations: ["永華市政中心", "民治市政中心", "諮商師服務地"],
+        counselorGenderOptions: ["女", "不拘"]
+      },
+      {
+        id: "goodday",
+        name: "日安心理治療所",
+        address: "臺南市南區夏林路167號",
+        phone: "06-2643939",
+        email: "goodday1051030@gmail.com",
+        website: "https://good-day-psy.blogspot.com/",
+        logo: "assets/logos/goodday.png",
+        specialties: ["情緒困擾", "親子關係", "家庭議題", "感情婚姻", "喪親失落", "身心壓力"],
+        description: "陪伴情緒、親子、家庭、失落與壓力調適。",
+        availableDays: ["星期一", "星期三", "星期五", "星期六"],
+        availableTimes: ["上午", "下午"],
+        methods: ["面談", "視訊"],
+        locations: ["各行政區衛生所", "諮商師服務地"],
+        counselorGenderOptions: ["男", "女", "不拘"]
+      },
+      {
+        id: "up3",
+        name: "上善心理治療所",
+        address: "臺南市北區林森路三段77號2樓",
+        phone: "06-2375555",
+        email: "up3.slchou5240@gmail.com",
+        website: "http://www.up3.url.tw/",
+        logo: "assets/logos/up3.png",
+        specialties: ["人際關係", "職場溝通", "職場適應", "工作效能", "情緒困擾", "生涯職涯"],
+        description: "適合職場、人際、工作效能與生涯職涯相關需求。",
+        availableDays: ["星期一", "星期二", "星期三", "星期四", "星期五"],
+        availableTimes: ["下午", "晚上"],
+        methods: ["面談"],
+        locations: ["永華市政中心", "民治市政中心", "諮商師服務地"],
+        counselorGenderOptions: ["男", "不拘"]
+      },
+      {
+        id: "cheerpsy",
+        name: "慈恩心理治療所",
+        address: "臺南市永康區中華路23巷1號",
+        phone: "06-3126267",
+        email: "tzuen.hearty@gmail.com",
+        website: "https://www.cheerpsy.com/",
+        logo: "assets/logos/cheerpsy.png",
+        specialties: ["情緒困擾", "身心壓力", "家庭議題", "親子關係", "感情婚姻", "喪親失落"],
+        description: "提供情緒、壓力、家庭、親子與關係失落支持。",
+        availableDays: ["星期二", "星期四", "星期五", "星期六", "星期日"],
+        availableTimes: ["上午", "下午", "晚上"],
+        methods: ["面談", "視訊"],
+        locations: ["民治市政中心", "各行政區衛生所", "諮商師服務地"],
+        counselorGenderOptions: ["女", "不拘"]
+      }
+    ];
+
+    const chatbotResponses = {
+      categories: [
+        { concern: "情緒困擾", keywords: ["焦慮", "憂鬱", "煩躁", "難過", "低落", "無助", "沮喪", "崩潰"], suggestions: ["情緒困擾"] },
+        { concern: "身心壓力", keywords: ["壓力", "疲憊", "失眠", "睡不好", "加班", "工作太多", "喘不過氣", "工作", "好累", "累"], suggestions: ["身心壓力", "工作效能", "職場適應"] },
+        { concern: "人際關係", keywords: ["同事", "主管", "衝突", "排擠", "人際", "霸凌"], suggestions: ["人際關係", "職場溝通"] },
+        { concern: "家庭議題", keywords: ["家庭", "父母", "婚姻", "家人", "照顧壓力"], suggestions: ["家庭議題", "感情婚姻"] },
+        { concern: "感情婚姻", keywords: ["感情", "伴侶", "分手", "婚姻"], suggestions: ["感情婚姻", "情緒困擾"] },
+        { concern: "親子關係", keywords: ["孩子", "小孩", "親子", "教養"], suggestions: ["親子關係", "家庭議題"] },
+        { concern: "生涯職涯", keywords: ["轉職", "升遷", "離職", "工作方向", "職涯"], suggestions: ["生涯職涯", "職場適應"] },
+        { concern: "預約需求", keywords: ["預約", "諮商", "心理師", "心理諮商"], suggestions: ["情緒困擾"] }
+      ],
+      crisisKeywords: ["自殺", "輕生", "不想活", "想結束生命", "傷害自己", "活不下去"]
+    };
+
+    // 未來如需串接 OpenAI API、Azure OpenAI、Google Gemini 或 Claude API，可把此規則式模組替換為經同意且有個資告知的後端代理服務。
+    // 目前版本不呼叫任何 AI API，不使用 localStorage、sessionStorage、Cookie 或遠端儲存，聊天紀錄只存在當前頁面狀態。
+    const moodSupportAssistant = {
+      detectedConcernTypes: new Set(),
+      chatHistory: [],
+      quickPrompts: ["最近壓力很大", "工作讓我好累", "家庭問題困擾我", "人際關係卡住了", "感情問題", "我想預約諮商", "我不知道該選哪類", "我想做壓力檢測"],
+      welcomeMessage: "嗨，我是心情垃圾筒。\n如果最近工作、人際、家庭、感情或生活上的事情讓你感到疲憊，可以先把心裡的煩惱丟給我。\n我會陪你一起整理目前的狀況，協助你找到適合的心理支持資源。\n你不需要一次把所有事情說清楚，只要從最想說的一件事情開始就可以了。"
+    };
+
+    let latestFormData = null;
+    let latestRecommendations = [];
+    let selectedCenter = null;
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[char]));
+    }
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function fallbackLogo(img) {
+      img.onerror = null;
+      img.src = createCounselingLogo(img.alt || "心理諮商所", "default");
+    }
+
+    function createCounselingLogo(name, seed) {
+      const palette = [
+        ["#f6d8a8", "#dfe8d5", "#c99663"],
+        ["#f7cfa4", "#cfe3be", "#de8a4d"],
+        ["#f8e6bd", "#d8ead7", "#b98255"],
+        ["#f1d1b5", "#e5ead0", "#d29162"]
+      ];
+      const colors = palette[Math.abs(String(seed).split("").reduce((sum, char) => sum + char.charCodeAt(0), 0)) % palette.length];
+      const label = String(name || "心").replace(/心理諮商所|心理治療所|圖示/g, "").slice(0, 2) || "心";
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+          <defs>
+            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.2"/>
+            </filter>
+          </defs>
+          <rect width="128" height="128" rx="32" fill="${colors[0]}"/>
+          <circle cx="87" cy="42" r="24" fill="${colors[1]}" opacity=".9"/>
+          <circle cx="39" cy="83" r="27" fill="#fff6e7" opacity=".72" filter="url(#soft)"/>
+          <path d="M33 78c15-24 47-24 62 0 8 13-2 27-17 19-8-4-17-4-25 0-15 8-28-6-20-19z" fill="${colors[2]}" opacity=".9"/>
+          <path d="M47 70c8-9 27-9 35 0" fill="none" stroke="#76513a" stroke-width="7" stroke-linecap="round"/>
+          <text x="64" y="53" text-anchor="middle" font-family="Microsoft JhengHei, sans-serif" font-size="28" font-weight="800" fill="#6f4a32">${label}</text>
+        </svg>
+      `);
+    }
+
+    function renderStaticData() {
+      $("#agency").innerHTML = `<option value="">請選擇</option>` + agencyOptions.map(item => `<option>${escapeHtml(item)}</option>`).join("");
+      $("#preferredClinic").innerHTML = `<option value="system">由系統推薦</option>` + counselingCenters.map(center => `<option value="${center.id}">${escapeHtml(center.name)}</option>`).join("");
+
+      $("#concernGrid").innerHTML = concernTypes.map(item => `
+        <label class="issue-card flex cursor-pointer items-center gap-3">
+          <input type="checkbox" name="concerns" value="${escapeHtml(item.id)}" class="h-5 w-5">
+          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#f5dec1] text-[#895b39]"><i class="fa-solid ${item.icon}" aria-hidden="true"></i></span>
+          <span class="font-black">${escapeHtml(item.id)}</span>
+        </label>
+      `).join("");
+
+      $("#clinicGrid").innerHTML = counselingCenters.map(center => `
+        <article class="soft-card flex h-full flex-col p-5">
+          <div class="mb-4 flex items-center gap-4">
+            <img class="logo-mark" src="${center.logo}" alt="${escapeHtml(center.name)}圖示" onerror="fallbackLogo(this)">
+            <div>
+              <a class="text-xl font-black text-[#5f3f2b] underline-offset-4 hover:underline" href="${center.website}" target="_blank" rel="noopener noreferrer">${escapeHtml(center.name)}</a>
+              <p class="mt-1 text-sm font-bold text-[#7c6656]">${escapeHtml(center.description)}</p>
+            </div>
+          </div>
+          <div class="grid gap-3 leading-7 text-[#5f4b3c]">
+            <p><i class="fa-solid fa-location-dot mr-2 text-[#c17a43]" aria-hidden="true"></i>${escapeHtml(center.address)}</p>
+            <p><i class="fa-solid fa-phone mr-2 text-[#c17a43]" aria-hidden="true"></i>${escapeHtml(center.phone)}</p>
+            <p class="break-all"><i class="fa-solid fa-envelope mr-2 text-[#c17a43]" aria-hidden="true"></i>${escapeHtml(center.email)}</p>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            ${center.specialties.map(s => `<span class="rounded-full bg-[#fff1d7] px-3 py-1 text-sm font-bold text-[#74513b]">${escapeHtml(s)}</span>`).join("")}
+          </div>
+          <a class="btn-secondary mt-5 px-5 py-2" href="${center.website}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>網站連結</a>
+        </article>
+      `).join("");
+    }
+
+    function getSelectedConcerns() {
+      return $$('input[name="concerns"]:checked').map(input => input.value);
+    }
+
+    function getFormData() {
+      const form = $("#reservationForm");
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.concerns = getSelectedConcerns();
+      return data;
+    }
+
+    function validateForm(data) {
+      const errors = [];
+      const requiredLabels = {
+        name: "姓名", gender: "性別", age: "年齡", agency: "服務機關", employeeType: "人員類別",
+        jobTitle: "職稱", serviceYears: "服務年資", email: "電子信箱", phone: "聯絡電話", mobile: "手機",
+        preferredClinic: "選擇諮商所", preferredDay: "希望諮商星期", preferredTime: "希望諮商時段",
+        method: "諮商方式", counselorGender: "諮商心理師性別", location: "諮商地點"
+      };
+
+      Object.entries(requiredLabels).forEach(([key, label]) => {
+        if (!String(data[key] || "").trim()) errors.push(`請填寫或選擇「${label}」。`);
+      });
+
+      if (!data.concerns.length) errors.push("請至少勾選一項問題類型。");
+      if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.push("電子信箱格式不正確。");
+      if (data.mobile && !/^09\d{8}$/.test(data.mobile.replace(/\s|-/g, ""))) errors.push("手機號碼請使用 09 開頭共 10 碼格式。");
+      if (data.phone && !/^[0-9#()+\-\s]{6,20}$/.test(data.phone)) errors.push("聯絡電話格式請使用數字、分機或連字號。");
+      return errors;
+    }
+
+    function displayErrors(errors) {
+      const errorBox = $("#formErrors");
+      if (!errors.length) {
+        errorBox.classList.add("hidden");
+        errorBox.innerHTML = "";
+        return;
+      }
+      errorBox.innerHTML = `<p class="font-black">請先確認以下欄位：</p><ul class="mt-2 list-disc pl-6">${errors.map(error => `<li>${escapeHtml(error)}</li>`).join("")}</ul>`;
+      errorBox.classList.remove("hidden");
+      errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function calculateRecommendations(formData) {
+      const maxScore = 20 * Math.max(formData.concerns.length, 1) + 15 + 15 + 15 + 15 + 10 + 20 + 30;
+      const chatDetected = Array.from(moodSupportAssistant.detectedConcernTypes);
+
+      return counselingCenters.map(center => {
+        let score = 0;
+        const reasons = [];
+        const matchedConcerns = formData.concerns.filter(concern => {
+          const specialtyMatch = center.specialties.includes(concern) || (concern === "職場溝通" && center.specialties.includes("人際關係"));
+          return specialtyMatch;
+        });
+
+        score += matchedConcerns.length * 20;
+        if (matchedConcerns.length) reasons.push(`符合您選擇的 ${matchedConcerns.join("、")} 議題`);
+        if (center.availableDays.includes(formData.preferredDay)) { score += 15; reasons.push(`可配合${formData.preferredDay}`); }
+        if (center.availableTimes.includes(formData.preferredTime)) { score += 15; reasons.push(`提供${formData.preferredTime}時段`); }
+        if (center.methods.includes(formData.method)) { score += 15; reasons.push(`提供${formData.method}服務`); }
+        if (center.locations.includes(formData.location)) { score += 15; reasons.push(`地點符合${formData.location}需求`); }
+        if (center.counselorGenderOptions.includes(formData.counselorGender) || formData.counselorGender === "不拘") { score += 10; reasons.push(`心理師性別選項符合需求`); }
+        if (formData.preferredClinic === center.id) { score += 20; reasons.push(`您已指定此諮商所`); }
+
+        chatDetected.forEach(type => {
+          if (center.specialties.includes(type)) score += 10;
+        });
+        if (chatDetected.length) reasons.push("已參考聊天中整理出的困擾類型");
+
+        const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+        const reasonText = reasons.length
+          ? `此諮商所${reasons.join("，")}。`
+          : "此諮商所提供多元心理支持服務，可作為進一步洽詢選項。";
+        return { center, score, percentage, reasonText, matchedConcerns };
+      }).sort((a, b) => b.score - a.score).slice(0, 3);
+    }
+
+    function renderRecommendations(recommendations) {
+      latestRecommendations = recommendations;
+      $("#recommendationGrid").innerHTML = recommendations.map(({ center, percentage, reasonText, matchedConcerns }) => `
+        <article class="soft-card flex h-full flex-col p-5">
+          <div class="mb-4 flex items-center gap-4">
+            <img class="logo-mark" src="${center.logo}" alt="${escapeHtml(center.name)}圖示" onerror="fallbackLogo(this)">
+            <div>
+              <h3 class="text-xl font-black text-[#5f3f2b]">${escapeHtml(center.name)}</h3>
+              <p class="font-black text-[#c17a43]"><i class="fa-solid fa-circle-check mr-1" aria-hidden="true"></i>符合需求 ${percentage}%</p>
+            </div>
+          </div>
+          <p class="leading-8">${escapeHtml(reasonText)}</p>
+          <div class="mt-4 grid gap-2 leading-7 text-[#5f4b3c]">
+            <p><i class="fa-solid fa-location-dot mr-2 text-[#c17a43]" aria-hidden="true"></i>${escapeHtml(center.address)}</p>
+            <p><i class="fa-solid fa-phone mr-2 text-[#c17a43]" aria-hidden="true"></i>${escapeHtml(center.phone)}</p>
+            <p class="break-all"><i class="fa-solid fa-envelope mr-2 text-[#c17a43]" aria-hidden="true"></i>${escapeHtml(center.email)}</p>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            ${matchedConcerns.map(s => `<span class="rounded-full bg-[#fff1d7] px-3 py-1 text-sm font-bold text-[#74513b]"><i class="fa-solid fa-heart mr-1" aria-hidden="true"></i>${escapeHtml(s)}</span>`).join("")}
+          </div>
+          <button class="btn-primary mt-5 px-5 py-3" type="button" data-select-center="${center.id}"><i class="fa-solid fa-hand-pointer" aria-hidden="true"></i>選擇此諮商所</button>
+        </article>
+      `).join("");
+      $("#recommendations").classList.remove("hidden");
+      $("#recommendations").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function buildEmailBody(formData, center) {
+      return [
+        "您好：",
+        "",
+        "我想預約臺南市政府員工協助方案心理諮商服務，以下為預約資料，敬請協助聯繫確認。",
+        "",
+        "【基本資料】",
+        `姓名：${formData.name}`,
+        `性別：${formData.gender}`,
+        `年齡：${formData.age}`,
+        `服務機關：${formData.agency}`,
+        `人員類別：${formData.employeeType}`,
+        `職稱：${formData.jobTitle}`,
+        `服務年資：${formData.serviceYears}`,
+        `電子信箱：${formData.email}`,
+        `聯絡電話：${formData.phone}`,
+        `手機：${formData.mobile}`,
+        "",
+        "【諮商需求】",
+        `問題類型：${formData.concerns.join("、")}`,
+        `希望諮商星期：${formData.preferredDay}`,
+        `希望諮商時段：${formData.preferredTime}`,
+        `諮商方式：${formData.method}`,
+        `諮商心理師性別：${formData.counselorGender}`,
+        `諮商地點：${formData.location}`,
+        `想跟諮商心理師說的話：${formData.message || "未填寫"}`,
+        "",
+        "【所選諮商所】",
+        `諮商所名稱：${center.name}`,
+        `地址：${center.address}`,
+        `電話：${center.phone}`,
+        "",
+        "提醒：本信件由非官方測試版預約介面產生，實際預約仍以諮商所回覆確認為準。"
+      ].join("\n");
+    }
+
+    function showConfirmation(centerId) {
+      selectedCenter = counselingCenters.find(center => center.id === centerId);
+      if (!selectedCenter || !latestFormData) return;
+
+      const body = buildEmailBody(latestFormData, selectedCenter);
+      const subject = `【臺南市政府員工協助方案心理諮商預約】${latestFormData.name}`;
+      const mailtoUrl = `mailto:${encodeURIComponent(selectedCenter.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      $("#confirmationSummary").innerHTML = `
+        <div class="rounded-3xl border border-amber-900/10 bg-white/70 p-5">
+          <h3 class="mb-3 text-xl font-black">申請者摘要</h3>
+          <p class="leading-8">${escapeHtml(latestFormData.name)}｜${escapeHtml(latestFormData.agency)}｜${escapeHtml(latestFormData.employeeType)}</p>
+          <p class="leading-8">問題類型：${escapeHtml(latestFormData.concerns.join("、"))}</p>
+          <p class="leading-8">期待：${escapeHtml(latestFormData.preferredDay)} ${escapeHtml(latestFormData.preferredTime)}｜${escapeHtml(latestFormData.method)}｜${escapeHtml(latestFormData.location)}</p>
+        </div>
+        <div class="rounded-3xl border border-amber-900/10 bg-white/70 p-5">
+          <h3 class="mb-3 text-xl font-black">所選諮商所</h3>
+          <p class="text-lg font-black">${escapeHtml(selectedCenter.name)}</p>
+          <p class="leading-8">${escapeHtml(selectedCenter.address)}</p>
+          <p class="leading-8">${escapeHtml(selectedCenter.phone)}｜${escapeHtml(selectedCenter.email)}</p>
+        </div>
+      `;
+      $("#emailDraft").value = body;
+      $("#mailtoButton").setAttribute("href", mailtoUrl);
+      $("#confirmation").classList.remove("hidden");
+      $("#confirmation").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function addChatMessage(sender, text, actions = []) {
+      moodSupportAssistant.chatHistory.push({ sender, text, actions });
+      const message = document.createElement("div");
+      message.className = `chat-message ${sender === "user" ? "user" : "bot"}`;
+      message.textContent = text;
+
+      if (actions.length) {
+        const actionWrap = document.createElement("div");
+        actionWrap.className = "mt-3 flex flex-wrap gap-2";
+        actions.forEach(action => {
+          const button = document.createElement(action.href ? "a" : "button");
+          button.className = "btn-secondary px-3 py-2 text-sm";
+          button.textContent = action.label;
+          if (action.href) {
+            button.href = action.href;
+            button.target = "_blank";
+            button.rel = "noopener noreferrer";
+          } else {
+            button.type = "button";
+            button.addEventListener("click", action.onClick);
+          }
+          actionWrap.appendChild(button);
+        });
+        message.appendChild(actionWrap);
+      }
+
+      $("#chatMessages").appendChild(message);
+      $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight;
+    }
+
+    function detectChatConcerns(text) {
+      const crisis = chatbotResponses.crisisKeywords.some(keyword => text.includes(keyword));
+      if (crisis) return { crisis: true, concerns: [] };
+
+      const concerns = [];
+      chatbotResponses.categories.forEach(category => {
+        if (category.keywords.some(keyword => text.includes(keyword))) {
+          category.suggestions.forEach(type => concerns.push(type));
+        }
+      });
+      return { crisis: false, concerns: Array.from(new Set(concerns)) };
+    }
+
+    function applyConcernTypesToForm(types) {
+      types.forEach(type => {
+        const input = $(`input[name="concerns"][value="${type}"]`);
+        if (input) input.checked = true;
+      });
+      $("#reservation").scrollIntoView({ behavior: "smooth", block: "start" });
+      showToast("已協助您帶入推薦的問題類型，接下來只需填寫基本資料即可。");
+    }
+
+    function handleChatInput(text) {
+      addChatMessage("user", text);
+      const result = detectChatConcerns(text);
+
+      if (result.crisis) {
+        addChatMessage("bot", "謝謝你願意說出這些感受。\n從你的訊息中，我感受到你可能正承受非常沉重的痛苦。\n此刻最重要的是先確保你的安全。\n請不要獨自承受，建議立即尋求真人協助。", [
+          { label: "撥打1925", href: "tel:1925" },
+          { label: "撥打119", href: "tel:119" },
+          { label: "前往預約表單", onClick: () => $("#reservation").scrollIntoView({ behavior: "smooth" }) }
+        ]);
+        return;
+      }
+
+      result.concerns.forEach(type => moodSupportAssistant.detectedConcernTypes.add(type));
+      const actions = [];
+      if (result.concerns.length) {
+        actions.push({ label: "帶入表單", onClick: () => applyConcernTypesToForm(result.concerns) });
+        actions.push({ label: "查看更多諮商所", onClick: () => $("#clinics").scrollIntoView({ behavior: "smooth" }) });
+      }
+
+      const shouldSuggestStressTest = ["壓力", "焦慮", "失眠", "情緒低落", "低落"].some(keyword => text.includes(keyword));
+      if (shouldSuggestStressTest) actions.push({ label: "前往壓力檢測", href: stressTestUrl });
+
+      if (result.concerns.length) {
+        addChatMessage("bot", `謝謝你願意說出來。\n聽起來這些狀況已經佔用你不少心力，先把它整理出來就是很重要的一步。\n依照你的描述，我建議可以考慮：\n${result.concerns.map(type => `✓ ${type}`).join("\n")}\n如果願意，我也可以協助你直接帶入預約表單。`, actions);
+      } else {
+        addChatMessage("bot", "我有讀到你正在嘗試把心裡的事情說出來。\n如果你願意，可以多說一點最近最困擾的是工作、人際、家庭、感情，還是身體與睡眠狀態？我會協助你整理成適合的預約問題類型。", [
+          { label: "前往預約表單", onClick: () => $("#reservation").scrollIntoView({ behavior: "smooth" }) },
+          { label: "壓力檢測", href: stressTestUrl }
+        ]);
+      }
+    }
+
+    function initializeChat() {
+      $("#quickPrompts").innerHTML = moodSupportAssistant.quickPrompts.map(prompt => `<button class="btn-secondary shrink-0 px-3 py-2 text-sm" type="button">${escapeHtml(prompt)}</button>`).join("");
+      addChatMessage("bot", moodSupportAssistant.welcomeMessage);
+
+      $$("#quickPrompts button").forEach(button => {
+        button.addEventListener("click", () => handleChatInput(button.textContent));
+      });
+    }
+
+    function bindEvents() {
+      $("#mobileMenuButton").addEventListener("click", () => {
+        const expanded = $("#mobileMenuButton").getAttribute("aria-expanded") === "true";
+        $("#mobileMenuButton").setAttribute("aria-expanded", String(!expanded));
+        $("#mobileMenu").classList.toggle("hidden");
+      });
+
+      $$('a[href^="#"]').forEach(link => {
+        link.addEventListener("click", () => $("#mobileMenu").classList.add("hidden"));
+      });
+
+      $("#reservationForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = getFormData();
+        const errors = validateForm(formData);
+        displayErrors(errors);
+        if (errors.length) return;
+        latestFormData = formData;
+        const recommendations = calculateRecommendations(formData);
+        renderRecommendations(recommendations);
+      });
+
+      $("#reservationForm").addEventListener("reset", () => {
+        window.setTimeout(() => {
+          $("#formErrors").classList.add("hidden");
+          $("#recommendations").classList.add("hidden");
+          $("#confirmation").classList.add("hidden");
+          $("#suicideNotice").classList.add("hidden");
+          latestFormData = null;
+          selectedCenter = null;
+        }, 0);
+      });
+
+      $("#concernGrid").addEventListener("change", () => {
+        $("#suicideNotice").classList.toggle("hidden", !getSelectedConcerns().includes("自殺意念"));
+      });
+
+      $("#recommendationGrid").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-select-center]");
+        if (button) showConfirmation(button.dataset.selectCenter);
+      });
+
+      $("#copyEmailButton").addEventListener("click", async () => {
+        const content = $("#emailDraft").value;
+        try {
+          await navigator.clipboard.writeText(content);
+          showToast("已複製信件內容。");
+        } catch (error) {
+          $("#emailDraft").select();
+          document.execCommand("copy");
+          showToast("已選取並複製信件內容。");
+        }
+      });
+
+      $("#chooseAgainButton").addEventListener("click", () => {
+        $("#confirmation").classList.add("hidden");
+        $("#recommendations").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      $("#backToTop").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+      window.addEventListener("scroll", () => {
+        $("#backToTop").classList.toggle("hidden", window.scrollY < 520);
+      });
+
+      $("#openChatButton").addEventListener("click", () => {
+        $("#chatPanel").classList.toggle("is-hidden");
+        const isOpen = !$("#chatPanel").classList.contains("is-hidden");
+        $("#openChatButton").setAttribute("aria-expanded", String(isOpen));
+      });
+
+      $("#minimizeChatButton").addEventListener("click", () => {
+        $("#chatPanel").classList.add("is-hidden");
+        $("#openChatButton").setAttribute("aria-expanded", "false");
+      });
+
+      $("#clearChatButton").addEventListener("click", () => {
+        moodSupportAssistant.chatHistory = [];
+        moodSupportAssistant.detectedConcernTypes.clear();
+        $("#chatMessages").innerHTML = "";
+        addChatMessage("bot", moodSupportAssistant.welcomeMessage);
+      });
+
+      $("#chatForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = $("#chatInput");
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        handleChatInput(text);
+      });
+    }
+
+    renderStaticData();
+    initializeChat();
+    bindEvents();
+  </script>
+</body>
+</html>

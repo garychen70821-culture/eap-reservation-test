@@ -1,0 +1,9 @@
+natureiswell=assets/logos/natureiswell.png
+hopelight=assets/logos/hopelight.png
+eosgrace=assets/logos/eosgrace.ico
+togetherwithheart=assets/logos/togetherwithheart.png
+kxmind=assets/logos/kxmind.png
+kxmind2=assets/logos/kxmind2.png
+goodday=assets/logos/goodday.png
+up3=assets/logos/up3.png
+cheerpsy=assets/logos/cheerpsy.png
