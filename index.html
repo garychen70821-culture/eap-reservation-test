@@ -334,11 +334,16 @@
         <div>
           <p class="font-black text-[#c17a43]">壓力檢測量表</p>
           <h2 class="section-title">先理解自己的身心狀態</h2>
-        <p class="mt-4 max-w-3xl text-lg leading-8">可先透過健康九九網站的壓力相關資源，初步了解自己的身心壓力狀態。原量表深層連結可能因網站改版失效，請於健康九九站內搜尋「壓力檢測」。外部網站將以新分頁開啟。</p>
-        </div>
+        <p class="mt-4 max-w-3xl text-lg leading-8">可先透過健康九九網站的壓力相關資源，初步了解自己的身心壓力狀態。健康九九的量表深層連結目前可能會重新導向失效，請開啟網站後搜尋「壓力指數測量表」。外部網站將以新分頁開啟。</p>
+      </div>
+      <div class="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
         <a class="btn-primary px-7 py-3" href="https://health99.hpa.gov.tw/" target="_blank" rel="noopener noreferrer">
           <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>前往健康九九網站
         </a>
+        <a class="btn-secondary px-7 py-3" href="https://www.google.com/search?q=%E5%81%A5%E5%BA%B7%E4%B9%9D%E4%B9%9D+%E5%A3%93%E5%8A%9B%E6%8C%87%E6%95%B8%E6%B8%AC%E9%87%8F%E8%A1%A8" target="_blank" rel="noopener noreferrer">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>搜尋量表
+        </a>
+      </div>
       </div>
     </section>
 
@@ -477,6 +482,7 @@
 
   <script>
     const stressTestUrl = "https://health99.hpa.gov.tw/";
+    const stressTestSearchUrl = "https://www.google.com/search?q=%E5%81%A5%E5%BA%B7%E4%B9%9D%E4%B9%9D+%E5%A3%93%E5%8A%9B%E6%8C%87%E6%95%B8%E6%B8%AC%E9%87%8F%E8%A1%A8";
 
     const agencyOptions = [
       "臺南市政府", "民政局", "財政稅務局", "教育局", "經濟發展局", "工務局", "水利局", "農業局",
@@ -1001,14 +1007,18 @@
       }
 
       const shouldSuggestStressTest = ["壓力", "焦慮", "失眠", "情緒低落", "低落"].some(keyword => text.includes(keyword));
-      if (shouldSuggestStressTest) actions.push({ label: "前往壓力檢測", href: stressTestUrl });
+      if (shouldSuggestStressTest) {
+        actions.push({ label: "前往健康九九", href: stressTestUrl });
+        actions.push({ label: "搜尋壓力量表", href: stressTestSearchUrl });
+      }
 
       if (result.concerns.length) {
         addChatMessage("bot", `謝謝你願意說出來。\n聽起來這些狀況已經佔用你不少心力，先把它整理出來就是很重要的一步。\n依照你的描述，我建議可以考慮：\n${result.concerns.map(type => `✓ ${type}`).join("\n")}\n如果願意，我也可以協助你直接帶入預約表單。`, actions);
       } else {
         addChatMessage("bot", "我有讀到你正在嘗試把心裡的事情說出來。\n如果你願意，可以多說一點最近最困擾的是工作、人際、家庭、感情，還是身體與睡眠狀態？我會協助你整理成適合的預約問題類型。", [
           { label: "前往預約表單", onClick: () => $("#reservation").scrollIntoView({ behavior: "smooth" }) },
-          { label: "壓力檢測", href: stressTestUrl }
+          { label: "前往健康九九", href: stressTestUrl },
+          { label: "搜尋壓力量表", href: stressTestSearchUrl }
         ]);
       }
     }
