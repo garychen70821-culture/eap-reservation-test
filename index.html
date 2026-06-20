@@ -334,11 +334,11 @@
         <div>
           <p class="font-black text-[#c17a43]">壓力檢測量表</p>
           <h2 class="section-title">先理解自己的身心狀態</h2>
-        <p class="mt-4 max-w-3xl text-lg leading-8">可先透過壓力檢測量表初步了解自己的身心壓力狀態。量表為外部網站，將以新分頁開啟。</p>
+        <p class="mt-4 max-w-3xl text-lg leading-8">可先透過健康九九網站的壓力相關資源，初步了解自己的身心壓力狀態。請開啟健康九九後搜尋「壓力指數測量表」。外部網站將以新分頁開啟。</p>
       </div>
       <div class="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
-        <a class="btn-primary px-7 py-3" href="https://health99.hpa.gov.tw/health99/HealthCheck/Detail?nodeId=115&type=StressIndex" target="_blank" rel="noopener noreferrer">
-          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>前往壓力檢測量表
+        <a class="btn-primary px-7 py-3" href="https://health99.hpa.gov.tw/" target="_blank" rel="noopener noreferrer">
+          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>前往健康九九網站
         </a>
       </div>
       </div>
@@ -478,7 +478,7 @@
   <div id="toast" class="toast rounded-full bg-[#5f3f2b] px-5 py-3 font-bold text-white shadow-xl" role="status"></div>
 
   <script>
-    const stressTestUrl = "https://health99.hpa.gov.tw/health99/HealthCheck/Detail?nodeId=115&type=StressIndex";
+    const stressTestUrl = "https://health99.hpa.gov.tw/";
 
     const agencyOptions = [
       "臺南市政府", "民政局", "財政稅務局", "教育局", "經濟發展局", "工務局", "水利局", "農業局",
@@ -1004,7 +1004,7 @@
 
       const shouldSuggestStressTest = ["壓力", "焦慮", "失眠", "情緒低落", "低落"].some(keyword => text.includes(keyword));
       if (shouldSuggestStressTest) {
-        actions.push({ label: "前往壓力檢測", href: stressTestUrl });
+        actions.push({ label: "前往健康九九", href: stressTestUrl });
       }
 
       if (result.concerns.length) {
@@ -1012,7 +1012,7 @@
       } else {
         addChatMessage("bot", "我有讀到你正在嘗試把心裡的事情說出來。\n如果你願意，可以多說一點最近最困擾的是工作、人際、家庭、感情，還是身體與睡眠狀態？我會協助你整理成適合的預約問題類型。", [
           { label: "前往預約表單", onClick: () => $("#reservation").scrollIntoView({ behavior: "smooth" }) },
-          { label: "壓力檢測", href: stressTestUrl }
+          { label: "前往健康九九", href: stressTestUrl }
         ]);
       }
     }
